@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIGenerator", "APIGenerator\APIGenerator.csproj", "{CF27EF21-0802-42FE-BD72-C41EC70A0561}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF27EF21-0802-42FE-BD72-C41EC70A0561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF27EF21-0802-42FE-BD72-C41EC70A0561}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF27EF21-0802-42FE-BD72-C41EC70A0561}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF27EF21-0802-42FE-BD72-C41EC70A0561}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {648DF8E5-6962-4ED1-8B6E-CDABBE97C56D}
+	EndGlobalSection
+EndGlobal
