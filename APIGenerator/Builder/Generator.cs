@@ -13,6 +13,10 @@ namespace APIGenerator.Builder
         public string builderType;
         public string version;
 
+        public string BuilderType { get; set; }
+        public string Version { get; set; }
+
+
         public Generator()
         {
 
@@ -38,7 +42,7 @@ namespace APIGenerator.Builder
 
         public void ResolveBuilder()
         {
-            switch (builderType)
+            switch (BuilderType)
             {
                 case "netcore":
                     builder = new NetCoreCodeBuilder();

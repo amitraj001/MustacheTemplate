@@ -11,6 +11,7 @@ namespace APIGenerator.Builder.NetCore._6._0
 {
     internal class NetCoreCodeBuilder : ICodeBuilder
     {
+      
         public OpenApiDocument openApiDocument = null;
         public NetCoreCodeBuilder()
         {

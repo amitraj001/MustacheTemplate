@@ -4,7 +4,10 @@ using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Readers;
 using System.Text;
 
-Generator generator = new Generator("netcore","6.0");
+Generator generator = new Generator();
+generator.BuilderType = "netcore";
+generator.version = "6.0";
+generator.ResolveBuilder();
 generator.Generate();
 
 
