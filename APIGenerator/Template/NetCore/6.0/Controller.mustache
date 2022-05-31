@@ -1,14 +1,18 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace {{controllernamespace}}
+namespace {{basenamespace}}.Controllers
 {
-    class {{controllername}}
+    class {{controllername}} : BaseController
     {
 {{#each operationname}}
+        /// <summary>
+        /// {{name}}
+        /// </summary>
         [HttpGet("{{name}}")]
         public void Get
         {
