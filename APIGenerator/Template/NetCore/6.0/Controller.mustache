@@ -9,12 +9,12 @@ namespace {{basenamespace}}.Controllers
 {
     class {{controllername}} : BaseController
     {
-{{#each operationname}}
+{{#each Operations}}
         /// <summary>
-        /// {{name}}
+        /// {{OperationSummary}}
         /// </summary>
-        [HttpGet("{{name}}")]
-        public void Get
+        [Http{{OperationVerb}}("{{OperationPath}}")]
+        public Task<IActionResult> {{OperationName}}({{#if}} {{/if}})
         {
 
         }

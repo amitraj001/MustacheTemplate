@@ -13,6 +13,7 @@ namespace APIGenerator.Builder.NetCore._6._0
     {
       
         public OpenApiDocument openApiDocument = null;
+        public string basePath = @"..\..\..\Template\NetCore\6.0\";
         public NetCoreCodeBuilder()
         {
 
@@ -42,17 +43,23 @@ namespace APIGenerator.Builder.NetCore._6._0
 
         public void GenerateControllers()
         {
-            List<operationname> operations = new List<operationname>();
+            List<ControllerModel> operations = new List<ControllerModel>();
             foreach (var _path in openApiDocument.Paths)
             {
-                operationname op = new operationname();
-                op.name = _path.Key;
-                operations.Add(op);
+                foreach (var _operation in _path.Value.Operations)
+                {
+                    ControllerModel op = new ControllerModel();
+                    op.OperationName = _operation.Value.OperationId;
+                    op.OperationSummary = _operation.Value.Summary;
+                    op.OperationPath = _path.Key.ToString(); 
+                    op.OperationVerb = _operation.Key.ToString();
+                    op.OperationParameters = _operation.Value.Parameters;
+                    operations.Add(op);
+                }
             }
 
             //Get template
-            string path = @"C:\APIGenerator\APIGenerator\Template\NetCore\6.0\Controller.mustache";
-            string readText = File.ReadAllText(path);
+            string readText = File.ReadAllText(GetTemplatePath(Components.Controller));
 
             //Init Mustache engine
             FormatCompiler compiler = new FormatCompiler();
@@ -63,8 +70,8 @@ namespace APIGenerator.Builder.NetCore._6._0
             var input = new
             {
                 controllername = "ApplicationAPIController", //Get from openapi spec
-                basenamespace = "API.Application.Controller", //Get from openapi spec
-                operationname = operations //Get from openapi spec
+                basenamespace = "API.Application", //Get from openapi spec
+                Operations = operations 
             };
 
             //Create output file
@@ -99,6 +106,20 @@ namespace APIGenerator.Builder.NetCore._6._0
             GenerateAppSettings();
         }
 
+        enum Components
+        {
+            Controller,
+            Csproj,
+            Dockerfile,
+            Model,
+            Sln,
+            Program
+        }
+
+        string GetTemplatePath(Components component)
+        {
+           return basePath + component + ".mustache";
+        }
 
     }
 }
