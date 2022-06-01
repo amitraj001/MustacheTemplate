@@ -7,14 +7,24 @@ using System.Threading.Tasks;
 
 namespace {{basenamespace}}.Controllers
 {
-    class {{controllername}} : BaseController
+    [ApiController]
+    public class {{controllername}} : ControllerBase
     {
+
+        private readonly ILogger<{{controllername}}> _logger;
+      
+        public {{controllername}}(ILogger<{{controllername}}> logger)
+        {
+            _logger = logger;
+        }
+
 {{#each Operations}}
         /// <summary>
         /// {{OperationSummary}}
         /// </summary>
         [Http{{OperationVerb}}("{{OperationPath}}")]
-        public Task<IActionResult> {{OperationName}}({{#if}} {{/if}})
+        [ProducesResponseType(200)]
+        public Task<IActionResult> {{OperationName}}({{#each OperationParameters}}{{#if In}}[From{{In}}] {{Schema.Format}} {{Name}}{{/if}}{{/each}})
         {
 
         }

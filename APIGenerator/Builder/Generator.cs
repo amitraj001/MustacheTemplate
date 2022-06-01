@@ -10,12 +10,10 @@ namespace APIGenerator.Builder
     public class Generator
     {
         public ICodeBuilder builder = null;
-        public string builderType;
-        public string version;
-
         public string BuilderType { get; set; }
         public string Version { get; set; }
-
+        public string OutputPath { get; set; }
+        public string OpeAPISpecPath { get; set; }
 
         public Generator()
         {
@@ -24,9 +22,6 @@ namespace APIGenerator.Builder
 
         public Generator(string _builderType, string _version)
         {
-            this.builderType = _builderType;
-            this.version = _version;
-
             ResolveBuilder();
         }
 
@@ -45,7 +40,7 @@ namespace APIGenerator.Builder
             switch (BuilderType)
             {
                 case "netcore":
-                    builder = new NetCoreCodeBuilder();
+                    builder = new NetCoreCodeBuilder(Version, OutputPath);
                     break;
                 default:
                     builder = null;

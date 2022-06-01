@@ -10,7 +10,9 @@ using System.Text;
 //Entry point
 Generator generator = new Generator();
 generator.BuilderType = "netcore";
-generator.version = "6.0";
+generator.Version = "6.0";
+generator.OutputPath = @"C:\src";
+generator.OpeAPISpecPath = "";
 generator.ResolveBuilder();
 generator.Generate();
 

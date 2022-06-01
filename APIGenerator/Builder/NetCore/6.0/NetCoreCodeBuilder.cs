@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using Newtonsoft.Json;
+using APIGenerator.Shared;
 
 namespace APIGenerator.Builder.NetCore._6._0
 {
@@ -13,10 +16,15 @@ namespace APIGenerator.Builder.NetCore._6._0
     {
       
         public OpenApiDocument openApiDocument = null;
-        public string basePath = @"..\..\..\Template\NetCore\6.0\";
-        public NetCoreCodeBuilder()
-        {
+        public string basePath = @"..\..\..\Template\NetCore\";
+        public string Version{ get; private set; }
+        public string OutputPath { get; set; }
+        string projname = "PetStore.API"; //pick from config
 
+        public NetCoreCodeBuilder(string version , string outputpath)
+        {
+            Version = version;
+            OutputPath = outputpath;
         }
 
         public async Task InitiliazeYaml()
@@ -43,6 +51,7 @@ namespace APIGenerator.Builder.NetCore._6._0
 
         public void GenerateControllers()
         {
+            //Create template input
             List<ControllerModel> operations = new List<ControllerModel>();
             foreach (var _path in openApiDocument.Paths)
             {
@@ -58,33 +67,35 @@ namespace APIGenerator.Builder.NetCore._6._0
                 }
             }
 
-            //Get template
-            string readText = File.ReadAllText(GetTemplatePath(Components.Controller));
-
-            //Init Mustache engine
-            FormatCompiler compiler = new FormatCompiler();
-            compiler.RemoveNewLines = false;
-
-            //Merge template with data
-            Mustache.Generator generator = compiler.Compile(readText);
             var input = new
             {
-                controllername = "ApplicationAPIController", //Get from openapi spec
-                basenamespace = "API.Application", //Get from openapi spec
-                Operations = operations 
+                controllername = "PetStoreController", //Get from openapi spec
+                basenamespace = "Pet.API", //Get from openapi spec
+                Operations = operations
             };
 
-            //Create output file
-            string result = generator.Render(input);
+            string outputpath = @$"{OutputPath}\{projname}\Controllers\{input.controllername}.cs";
 
-            //Get from appsettings config
-            string outputpath = @"C:\APIGenerator\APIGenerator\Output\Controller.cs";
-            File.WriteAllText(outputpath, result, Encoding.UTF8);
-
+            MergeTemplate(Component.Controller, input, outputpath);
         }
 
         public void GenerateFolders()
         {
+            Directory.CreateDirectory(@$"{OutputPath}");
+            Directory.CreateDirectory(@$"{OutputPath}");
+            Directory.CreateDirectory(@$"{OutputPath}\components");
+            Directory.CreateDirectory(@$"{OutputPath}\obj");
+            Directory.CreateDirectory(@$"{OutputPath}\{projname}");
+            Directory.CreateDirectory(@$"{OutputPath}\{projname}\bin");
+            Directory.CreateDirectory(@$"{OutputPath}\{projname}\components");
+            Directory.CreateDirectory(@$"{OutputPath}\{projname}\obj");
+            Directory.CreateDirectory(@$"{OutputPath}\{projname}\.config");
+            Directory.CreateDirectory(@$"{OutputPath}\{projname}\Controllers");
+            Directory.CreateDirectory(@$"{OutputPath}\{projname}\Models");
+            Directory.CreateDirectory(@$"{OutputPath}\{projname}\Properties");
+            Directory.CreateDirectory(@$"{OutputPath}\{projname}\Services");
+            Directory.CreateDirectory(@$"{OutputPath}\{projname}\DTO");
+
         }
 
         public void GenerateModels()
@@ -106,19 +117,27 @@ namespace APIGenerator.Builder.NetCore._6._0
             GenerateAppSettings();
         }
 
-        enum Components
-        {
-            Controller,
-            Csproj,
-            Dockerfile,
-            Model,
-            Sln,
-            Program
-        }
+      
 
-        string GetTemplatePath(Components component)
+        void MergeTemplate(Component component, dynamic input, string outputpath)
         {
-           return basePath + component + ".mustache";
+            var settings = Utility.GetSettings(basePath, Version);
+            
+            //Get template
+            string readText = File.ReadAllText(Utility.GetTemplatePath(component, Version, basePath));
+
+            //Init Mustache engine
+            FormatCompiler compiler = new FormatCompiler();
+            compiler.RemoveNewLines = false;
+
+            //Merge template with data
+            Mustache.Generator generator = compiler.Compile(readText);
+
+            //Create output file
+            string result = generator.Render(input);
+
+            //Get from appsettings config
+            File.WriteAllText(outputpath, result, Encoding.UTF8);
         }
 
     }
