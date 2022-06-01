@@ -63,6 +63,7 @@ namespace APIGenerator.Builder.NetCore._6._0
                     op.OperationPath = _path.Key.ToString(); 
                     op.OperationVerb = _operation.Key.ToString();
                     op.OperationParameters = _operation.Value.Parameters;
+                    op.OperationResponses = _operation.Value.Responses;
                     operations.Add(op);
                 }
             }

@@ -13,7 +13,7 @@ namespace APIGenerator.Builder.NetCore._6._0
         public string? OperationVerb { get; set; }
         public string? OperationSummary { get; set; }
         public string? OperationPath { get; set; }
-
-        public IList<OpenApiParameter> OperationParameters { get; set; }
+        public IList<OpenApiParameter>? OperationParameters { get; set; }
+        public OpenApiResponses? OperationResponses { get; set; }
     }
 }
