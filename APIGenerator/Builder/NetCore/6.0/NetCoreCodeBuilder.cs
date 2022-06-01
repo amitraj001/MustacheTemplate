@@ -57,12 +57,42 @@ namespace APIGenerator.Builder.NetCore._6._0
             {
                 foreach (var _operation in _path.Value.Operations)
                 {
+                    List<ParameterModel> paramModel = new List<ParameterModel>();
+                    var inputParam = "";
+                    foreach(var param in _operation.Value.Parameters)
+                    {
+                        ParameterModel paraminput = new ParameterModel()
+                        {
+                            name = param.Name,
+                            description = param.Description,
+                            inputin = param.In.ToString(),
+                            schema = param.Schema.Type,
+                            required = param.Required == true ? "[Required]" : ""
+                        };
+
+                        paramModel.Add(paraminput);
+
+                        inputParam = inputParam +
+                            Utility.IsRequired(param.Required) +
+                            Utility.ParameterAttribute(param.In.ToString()) + 
+                            Utility.MapDataType(param.Schema.Type.ToLower()) +
+                            " " +
+                            param.Name
+                            +",";
+
+                        if(inputParam.Length > 0)
+                        {
+                            inputParam = inputParam.Substring(0, inputParam.Length - 1);
+                        }
+
+                    }
+
                     ControllerModel op = new ControllerModel();
                     op.OperationName = _operation.Value.OperationId;
                     op.OperationSummary = _operation.Value.Summary;
                     op.OperationPath = _path.Key.ToString(); 
                     op.OperationVerb = _operation.Key.ToString();
-                    op.OperationParameters = _operation.Value.Parameters;
+                    op.OperationParameters = inputParam;
                     op.OperationResponses = _operation.Value.Responses;
                     operations.Add(op);
                 }
@@ -71,7 +101,7 @@ namespace APIGenerator.Builder.NetCore._6._0
             var input = new
             {
                 controllername = "PetStoreController", //Get from openapi spec
-                basenamespace = "Pet.API", //Get from openapi spec
+                basenamespace = "Pet", //Get from openapi spec
                 Operations = operations
             };
 

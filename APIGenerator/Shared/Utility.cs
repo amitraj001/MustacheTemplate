@@ -24,5 +24,38 @@ namespace APIGenerator.Shared
             }
 
         }
+
+        public static string IsRequired(bool required)
+        {
+            return (required == true ? "[Required]" : "");
+        }
+
+        public static string ParameterAttribute(string input)
+        {
+            switch(input)
+            {
+                case "query":
+                    return "[FromQuery]";
+                case "path":
+                    return "[FromRoute]";
+                default:
+                    return "";
+            }
+        }
+
+        public static string MapDataType(string input)
+        {
+            switch (input)
+            {
+                case "int32":
+                case "int64":
+                case "integer":
+                    return "int";
+                case "float":
+                    return "float";
+                default:
+                    return input;
+            }
+        }
     }
 }

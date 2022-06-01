@@ -5,17 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace {{basenamespace}}.Controllers
+namespace {{basenamespace}}.API.Controllers
 {
     [ApiController]
     public class {{controllername}} : ControllerBase
     {
 
         private readonly ILogger<{{controllername}}> _logger;
+        private readonly I{{basenamespace}}Service _service;
       
-        public {{controllername}}(ILogger<{{controllername}}> logger)
+        public {{controllername}}(ILogger<{{controllername}}> logger, I{{basenamespace}}Service _service)
         {
             _logger = logger;
+            _service = service;
         }
 
 {{#each Operations}}
@@ -24,7 +26,7 @@ namespace {{basenamespace}}.Controllers
         /// </summary>
         [Http{{OperationVerb}}("{{OperationPath}}")]
         [ProducesResponseType(200)]
-        public Task<IActionResult> {{OperationName}}({{#each OperationParameters}}{{#if In}}[From{{In}}] {{Schema.Format}} {{Name}}{{/if}}{{/each}})
+        public Task<IActionResult> {{OperationName}}({{OperationParameters}})
         {
 
         }
